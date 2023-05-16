@@ -1,0 +1,91 @@
+#works with  running on the Android device
+#use ipconfig to set the IP address each time it will change with WiFi
+#always check you are on the same wifi network !!!
+#creates two files, one for each sensor
+# if you only use one sensor you only get one file
+
+import keyboard
+from datetime import datetime
+
+'''
+todo 1. Add questions for user for the following:-
+        a. Enter the name of the file you will save this session as - ready to test
+        b. Add press esc to end recording type functionality - ready to test
+        c. Add the start session, end session bleep
+        d. Add functionality to save the data as a file - complete and working for multithreads (n-sensors !!!)
+        e. Add variable pitch sound for both devices
+        f. Build a pandas dataframe, MUST have time recorded and cannot easily send as a string
+        g. Save to file on ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the
+           remote host. then write the pandas dataframe to a .csv file
+'''
+
+import socket, threading, time, pandas as pd
+import io
+import time
+
+df = pd.DataFrame()
+
+class ClientThread(threading.Thread):
+    def __init__(self,clientAddress,clientsocket):
+        threading.Thread.__init__(self)
+        self.csocket = clientsocket
+        print ("New connection  added: ", clientAddress)
+
+
+
+    def run(self):
+
+        def current_milli_time():
+            return round(time.time() * 1000)
+
+        df = pd.DataFrame({'x': pd.Series(dtype='str')})
+
+        print ("Connection from : ", clientAddress)
+        self.csocket.send(bytes("Hi, This is from Server..",'utf-8'))
+        msg = ''
+        while True:
+            data = self.csocket.recv(2048)
+            msg = data.decode() # msg is the data. I can save just the msg but should add client ID to data
+            if keyboard.is_pressed("q"):
+                print("Quitting and saving file")
+                current_datetime = datetime.now()
+                str_current_datetime = str(current_datetime)
+                file_name = str_current_datetime + ".csv"
+                file_name = file_name.replace(' ', '')
+                file_name = file_name.replace('-', '')
+                file_name = file_name.replace(':', '')
+                df.to_csv(file_name)
+                print("file saved as: ",file_name)
+                quit()
+            if msg=='bye':
+                print('Bye message received')
+                break
+            current_time_ms = current_milli_time()
+            msg = msg + "," + str(current_time_ms)
+            print(msg)
+            df = pd.concat([df, pd.DataFrame({msg}, index=[0])])
+            #print(df)
+
+            self.csocket.send(bytes(msg,'UTF-8'))
+        print ("Client at ", clientAddress , " disconnected...")
+
+LOCALHOST = "192.168.54.90"
+PORT = 12345
+
+# setup complete - ready to start
+print("Once started press q to end data capture")
+
+input("Press any key to start data capture")
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server.bind((LOCALHOST, PORT))
+
+print("Server started")
+print("Waiting for client request..")
+
+while True:
+    server.listen(1)
+    clientsock, clientAddress = server.accept()
+    newthread = ClientThread(clientAddress, clientsock)
+    newthread.start()
