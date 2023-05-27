@@ -4,9 +4,6 @@
 #creates two files, one for each sensor
 # if you only use one sensor you only get one file
 
-#print hello
-
-
 import keyboard
 from datetime import datetime
 import socket, threading, time, pandas as pd
