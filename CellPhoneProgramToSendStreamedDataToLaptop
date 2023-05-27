@@ -6,7 +6,7 @@ import androidhelper
 droid = androidhelper.Android()
 port=12345
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-s.connect(("192.168.54.90",port)) #IP address of the server
+s.connect(("192.168.4.47",port)) #IP address of the server
 dt =1
 
 droid.startSensingTimed(2,dt)
