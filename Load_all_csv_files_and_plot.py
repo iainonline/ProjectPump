@@ -68,3 +68,7 @@ plt.plot(sensordataDFclean[4], sensordataDFclean[2], label="y")
 plt.plot(sensordataDFclean[4], sensordataDFclean[3], label="z")
 plt.legend()
 plt.show()
+
+# save the plot as a .png file
+plt.savefig("plot.png")
+print("plot saved as plot.png")
