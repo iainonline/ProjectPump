@@ -6,19 +6,6 @@
 
 import keyboard
 from datetime import datetime
- 
-'''
-todo 1. Add questions for user for the following:-
-        a. Enter the name of the file you will save this session as - ready to test
-        b. Add press esc to end recording type functionality - ready to test
-        c. Add the start session, end session bleep
-        d. Add functionality to save the data as a file - complete and working for multithreads (n-sensors !!!)
-        e. Add variable pitch sound for both devices
-        f. Build a pandas dataframe, MUST have time recorded and cannot easily send as a string
-        g. Save to file on ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the
-           remote host. then write the pandas dataframe to a .csv file
-'''
-
 import socket, threading, time, pandas as pd
 import io
 import time
