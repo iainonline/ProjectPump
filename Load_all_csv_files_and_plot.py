@@ -40,7 +40,7 @@ sensordataDFclean = sensordataDF[0].str.split(",", expand=True)
 print(sensordataDFclean)
 
 # delete rows 6,7,8,9,10
-sensordataDFclean = sensordataDFclean.drop([5,6,7,8,9,10,11,12,13], axis=1)
+sensordataDFclean = sensordataDFclean.drop([5,6,7,8,9,10], axis=1)
 
 #remove [ from column 1
 sensordataDFclean[1] = sensordataDFclean[1].str.replace('[', '')
@@ -96,19 +96,6 @@ sensordataDFcleanFloatsDevice2 = sensordataDFcleanFloats[sensordataDFcleanFloats
 #plot sensordataDFcleanFloatsDevice1 as a scatter plot
 import matplotlib.pyplot as plt
 
-plt.scatter(sensordataDFcleanFloatsDevice1["time"], sensordataDFcleanFloatsDevice1["x"], label="x")
-plt.scatter(sensordataDFcleanFloatsDevice1["time"], sensordataDFcleanFloatsDevice1["y"], label="y")
-plt.scatter(sensordataDFcleanFloatsDevice1["time"], sensordataDFcleanFloatsDevice1["z"], label="z")
-plt.legend()
-plt.show()
-
-#plot sensordataDFcleanFloatsDevice2 as a scatter plot
-plt.scatter(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2["x"], label="x")
-plt.scatter(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2["y"], label="y")
-plt.scatter(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2["z"], label="z")
-plt.legend()
-plt.show()
-
 #plot sensordataDFcleanFloatsDevice1 and sensordataDFcleanFloatsDevice2 as a line plots on the same graph
 plt.plot(sensordataDFcleanFloatsDevice1["time"], sensordataDFcleanFloatsDevice1["x"], label="x")
 plt.plot(sensordataDFcleanFloatsDevice1["time"], sensordataDFcleanFloatsDevice1["y"], label="y")
@@ -117,4 +104,6 @@ plt.plot(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2[
 plt.plot(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2["y"], label="y")
 plt.plot(sensordataDFcleanFloatsDevice2["time"], sensordataDFcleanFloatsDevice2["z"], label="z")
 plt.legend()
+# save the plot as a .png file
+plt.savefig("plot.png")
 plt.show()
