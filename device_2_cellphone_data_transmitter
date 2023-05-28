@@ -1,0 +1,23 @@
+# device_2_cellphone_data_transmitter.py
+#-*-coding:utf8;-*-
+#qpy:console
+import time
+import socket
+import androidhelper
+droid = androidhelper.Android()
+port=12345
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.connect(("192.168.4.47",port)) #IP address of the server
+dt =1
+
+droid.startSensingTimed(2,dt)
+
+while True:
+    accel = droid.sensorsReadAccelerometer().result
+    print(accel)
+    data = bytes(str('device_2')+str(',')+str(accel),'ascii')
+    s.send(data)
+    time.sleep(0.05)
+
+data = bytes(str('bye'),'ascii')
+s.send(data)

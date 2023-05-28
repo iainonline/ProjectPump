@@ -40,7 +40,7 @@ sensordataDFclean = sensordataDF[0].str.split(",", expand=True)
 print(sensordataDFclean)
 
 # delete rows 6,7,8,9,10
-sensordataDFclean = sensordataDFclean.drop([5,6,7,8,9,10,11,12,13], axis=1)
+sensordataDFclean = sensordataDFclean.drop([5,6,7,8,9,10], axis=1)
 
 #remove [ from column 1
 sensordataDFclean[1] = sensordataDFclean[1].str.replace('[', '')
