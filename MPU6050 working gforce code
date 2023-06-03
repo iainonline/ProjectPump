@@ -1,0 +1,25 @@
+import motion
+import pickle
+import time
+
+gravity_list = [0,0,0]
+
+motion.start_updates()
+for loop in range(100):
+    gravity = motion.get_user_acceleration()
+    x = gravity[0]
+    y = gravity[1]
+    z = gravity[2]
+	print(round(x,2),round(y,2),round(z,2))
+	time.sleep(0.1)
+	gravity_list.append(gravity)
+motion.stop_updates()
+
+with open('gravity.pkl', 'wb') as f:
+	pickle.dump(gravity_list, f)
+print('Data saved')
+
+with open('gravity.pkl', 'rb') as f:
+	mynewlist = pickle.load(f)
+print('Data loaded')
+print(mynewlist)
